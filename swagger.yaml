@@ -1,0 +1,590 @@
+---
+swagger: "2.0"
+info:
+  description: "Cyber sport tournament portal"
+  version: "1.0.0"
+  title: "Cyber sport tournament portal"
+host: "virtserver.swaggerhub.com"
+basePath: "/oleggator/api/1.0.0"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+parameters:
+  Nickname:
+    name: "nickname"
+    in: "path"
+    description: "Slug"
+    required: true
+    type: "string"
+  Slug:
+    name: "slug"
+    in: "path"
+    description: "Slug"
+    required: true
+    type: "string"
+  ID:
+    name: "id"
+    in: "path"
+    description: "Идентификатор объекта"
+    required: true
+    type: "number"
+    format: "int64"
+  Limit:
+    name: "limit"
+    in: "query"
+    type: "number"
+    format: "int32"
+    description:  "Максимальное кол-во возвращаемых записей."
+    minimum: 1
+    maximum: 500
+  Since:
+    name: "since"
+    in: "query"
+    type: "number"
+    format: "int64"
+    description: "Идентификатор, с которого будут выводиться объекты."
+  Desc:
+    name: "desc"
+    in: "query"
+    type: "boolean"
+    description: "Флаг сортировки по убыванию."
+paths:
+  /players:
+    get:
+      summary: "Запрос всех игроков"
+      parameters:
+      - $ref: "#/parameters/Limit"
+      - $ref: "#/parameters/Since"
+      - $ref: "#/parameters/Desc"
+      responses:
+        200:
+          description: "Игроки найдены"
+          schema:
+            $ref: "#/definitions/Players"
+    post:
+      summary: "Добавить игрока"
+      parameters:
+      - name: "players"
+        in: "body"
+        description: "Данные игрока"
+        required: true
+        schema:
+          $ref: "#/definitions/Player"
+      responses:
+        201:
+          description: "Игрок успещно добавлен"
+          schema:
+            $ref: "#/definitions/Player"
+        409:
+          description: "Игрок уже существует"
+          schema:
+            $ref: "#/definitions/Player"
+  /players/{nickname}:
+    parameters:
+    - $ref: "#/parameters/Nickname"
+    get:
+      summary: "Запрос информации о игроке"
+      responses:
+        200:
+          description: "Игрок найден"
+          schema:
+            $ref: "#/definitions/Player"
+        404:
+          description: "Игрок не найден"
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: "Удаление игрока"
+      responses:
+        200:
+          description: "Игрок успешно удален"
+        404:
+          description: "Игрок не найден"
+          schema:
+            $ref: "#/definitions/Error"
+  /teams:
+    get:
+      summary: "Запрос всех команд"
+      parameters:
+      - $ref: "#/parameters/Limit"
+      - $ref: "#/parameters/Since"
+      - $ref: "#/parameters/Desc"
+      responses:
+        200:
+          description: "Команды найдены"
+          schema:
+            $ref: "#/definitions/Teams"
+    post:
+      summary: "Добавить команду"
+      parameters:
+      - name: "team"
+        in: "body"
+        description: "Данные команды"
+        required: true
+        schema:
+          $ref: "#/definitions/Team"
+      responses:
+        201:
+          description: "Команда успешно добавлена"
+          schema:
+            $ref: "#/definitions/Team"
+        409:
+          description: "Команда уже существует"
+          schema:
+            $ref: "#/definitions/Team"
+  /teams/{slug}:
+    parameters:
+    - $ref: "#/parameters/Slug"
+    get:
+      summary: "Запрос информации о команде"
+      responses:
+        200:
+          description: "Команда найдена"
+          schema:
+            $ref: "#/definitions/Team"
+        404:
+          description: "Команда не найдена"
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: "Удаление команды"
+      responses:
+        200:
+          description: "Команда успешна удален"
+        404:
+          description: "Команда не найдена"
+          schema:
+            $ref: "#/definitions/Error"
+  /matches:
+    get:
+      summary: "Запрос всех матчей"
+      parameters:
+      - $ref: "#/parameters/Limit"
+      - $ref: "#/parameters/Since"
+      - $ref: "#/parameters/Desc"
+      responses:
+        200:
+          description: "Матчи найдены"
+          schema:
+            $ref: "#/definitions/Matches"
+    post:
+      summary: "Добавление матча"
+      parameters:
+      - name: "match"
+        in: "body"
+        description: "Данные матча"
+        required: true
+        schema:
+          $ref: "#/definitions/Match"
+      responses:
+        201:
+          description: "Матч успешно добавлен"
+          schema:
+            $ref: "#/definitions/Match"
+        409:
+          description: "Матч уже существует"
+          schema:
+            $ref: "#/definitions/Match"
+  /matches/{id}:
+    parameters:
+    - $ref: "#/parameters/ID"
+    get:
+      summary: "Запрос информации о матче"
+      responses:
+        200:
+          description: "Матч найден"
+          schema:
+            $ref: "#/definitions/Match"
+        404:
+          description: "Матч не найден"
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: "Удаление матча"
+      responses:
+        200:
+          description: "Матч успешно удален"
+          schema:
+            $ref: "#/definitions/Match"
+        404:
+          description: "Матч не найден"
+          schema:
+            $ref: "#/definitions/Error"
+  /games:
+    get:
+      summary: "Запрос всех игр"
+      parameters:
+      - $ref: "#/parameters/Limit"
+      - $ref: "#/parameters/Since"
+      - $ref: "#/parameters/Desc"
+      responses:
+        200:
+          description: "Игра найдена"
+          schema:
+            $ref: "#/definitions/Games"
+    post:
+      summary: "Добавление игры"
+      parameters:
+      - name: "game"
+        in: "body"
+        description: "Данные игры"
+        required: true
+        schema:
+          $ref: "#/definitions/Game"
+      responses:
+        201:
+          description: "Игра успешно добавлена"
+          schema:
+            $ref: "#/definitions/Game"
+        409:
+          description: "Игра уже существует"
+          schema:
+            $ref: "#/definitions/Game"
+  /games/{slug}:
+    parameters:
+    - $ref: "#/parameters/Slug"
+    get:
+      summary: "Запрос игры"
+      responses:
+        200:
+          description: "Игра найдена"
+          schema:
+            $ref: "#/definitions/Game"
+        404:
+          description: "Игра не обнаружена"
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: "Удаление игры"
+      responses:
+        200:
+          description: "Игра успешно удалена"
+        404:
+          description: "Игра не обнаружена"
+          schema:
+            $ref: "#/definitions/Error"
+  /tournaments:
+    get:
+      summary: "Запрос всех турниров"
+      parameters:
+      - $ref: "#/parameters/Limit"
+      - $ref: "#/parameters/Since"
+      - $ref: "#/parameters/Desc"
+      responses:
+        200:
+          description: "Турниры найдены"
+          schema:
+            $ref: "#/definitions/Tournaments"
+    post:
+      summary: "Добавление турнира"
+      parameters:
+      - name: "tournament"
+        in: "body"
+        description: "Данные турнира"
+        schema:
+          $ref: "#/definitions/Tournament"
+      responses:
+        201:
+          description: "Турнир успешно добавлен"
+          schema:
+            $ref: "#/definitions/Tournament"
+        409:
+          description: "Турнир уже существует"
+          schema:
+            $ref: "#/definitions/Tournament"
+  /tournaments/{slug}:
+    parameters:
+    - $ref: "#/parameters/Slug"
+    get:
+      summary: "Запрос информации о турнире"
+      responses:
+        200:
+          description: "Турнир найден"
+          schema:
+            $ref: "#/definitions/Tournament"
+        404:
+          description: "Турнир не обнаружен"
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: "Удаление турнира"
+      responses:
+        200:
+          description: "Турнир успешно удален"
+        404:
+          description: "Турнир не обнаружен"
+          schema:
+            $ref: "#/definitions/Error"
+  /apps:
+    get:
+      summary: "Запросить список зарегистрированных приложений"
+      parameters:
+      - $ref: "#/parameters/Limit"
+      - $ref: "#/parameters/Since"
+      - $ref: "#/parameters/Desc"
+      responses:
+        200:
+          description: "Список приложений выведен"
+          schema:
+            $ref: "#/definitions/Apps"
+    post:
+      summary: "Зарегистрировать приложение"
+      parameters:
+      - name: "apps"
+        in: "body"
+        description: "Данные приложения"
+        required: true
+        schema:
+          $ref: "#/definitions/App"
+      responses:
+        201:
+          description: "Приложение успешно зарегистированно"
+          schema:
+            $ref: "#/definitions/App"
+  /apps/{id}:
+    parameters:
+    - $ref: "#/parameters/ID"
+    get:
+      summary: "Запросить информацию о зарегистрированном приложении"
+      responses:
+        200:
+          description: "Приложение выведено"
+          schema:
+            $ref: "#/definitions/App"
+        403:
+          description: "Приложение не принадлежит пользователю"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Приложение не существует"
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: "Удаление приложения"
+      responses:
+        200:
+          description: "Приложение успешно удалено"
+        403:
+          description: "Приложение не принадлежит пользователю"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Приложение не существует"
+          schema:
+            $ref: "#/definitions/Error"
+  /oauth/authorize:
+    get:
+      summary: "Авторизация"
+      produces:
+      - "text/html"
+      parameters:
+      - name: "client_id"
+        in: "query"
+        description: "Идентификатор клиента"
+        required: false
+        type: "string"
+      - name: "redirect_uri"
+        in: "query"
+        description: "Адрес редиректа"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Страница авторизации"
+  /oauth/token:
+    post:
+      summary: "Получение токена"
+      parameters: []
+      responses:
+        200:
+          description: "Получение токена"
+securityDefinitions:
+  accessCode:
+    type: "oauth2"
+    authorizationUrl: "http://example.com/oauth/auth"
+    tokenUrl: "http://example.com/oauth/token"
+    flow: "accessCode"
+    scopes:
+      write: "allows modifying resources"
+      read: "allows reading resources"
+  password:
+    type: "oauth2"
+    tokenUrl: "http://example.com/oauth/token"
+    flow: "password"
+    scopes:
+      write: "allows modifying resources"
+      read: "allows reading resources"
+definitions:
+  Error:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Описание ошибки"
+  Player:
+    type: "object"
+    required:
+    - "nickname"
+    - "team"
+    properties:
+      id:
+        type: "number"
+        format: "int64"
+        description: "Идентификатор игрока"
+      nickname:
+        type: "string"
+        description: "Псевдоним игрока"
+      fullname:
+        type: "string"
+        description: "Имя игрока"
+      country:
+        type: "string"
+        description: "Страна игрока"
+      team:
+        type: "string"
+        description: "Slug команды"
+    example:
+      country: "ru"
+      nickname: "doter228"
+      id: 123
+      fullname: "Ivan Petrov"
+  Players:
+    type: "array"
+    items:
+      $ref: "#/definitions/Player"
+  Team:
+    type: "object"
+    required:
+    - "title"
+    properties:
+      id:
+        type: "number"
+        format: "int64"
+        description: "Идентификатор команды"
+      title:
+        type: "string"
+        description: "Название команды"
+      slug:
+        type: "string"
+        description: "Slug"
+      country:
+        type: "string"
+        description: "Страна команды"
+    example:
+      id: 123
+      title: "russian dota2 team"
+  Teams:
+    type: "array"
+    items:
+      $ref: "#/definitions/Team"
+  Game:
+    type: "object"
+    required:
+    - title
+    properties:
+      id:
+        type: "number"
+        format: "int64"
+        description: "Идентификатор игры"
+      title:
+        type: "string"
+        description: "Название игры"
+      slug:
+        type: "string"
+        description: "Slug"
+    example:
+      id: 123
+      title: "PUBG"
+  Games:
+    type: "array"
+    items:
+      $ref: "#/definitions/Game"
+  Match:
+    type: "object"
+    required:
+    - "team1"
+    - "team2"
+    - "startAt"
+    properties:
+      id:
+        type: "number"
+        format: "int64"
+        description: "Идентификатор матча"
+      team1:
+        type: "number"
+        format: "int64"
+        description: "Slug первой команды, учавствующей в матче"
+      team2:
+        type: "number"
+        format: "int64"
+        description: "Slug второй команды, учавствующей в матче"
+      startAt:
+        type: "string"
+        format: "date-time"
+        description: "Дата и время начала"
+    example:
+      team1: "dota2 uganda team"
+      team2: "dota2 russia team"
+      id: 234
+  Matches:
+    type: "array"
+    items:
+      $ref: "#/definitions/Match"
+  Tournament:
+    type: "object"
+    required:
+    - "title"
+    properties:
+      id:
+        type: "number"
+        format: "int64"
+        description: "Идентификатор турнира"
+      title:
+        type: "string"
+        description: "Название туринира"
+      slug:
+        type: "string"
+        description: "Slug"
+    example:
+      id: 12
+      title: "international"
+  Tournaments:
+    type: "array"
+    items:
+      $ref: "#/definitions/Tournament"
+  App:
+    type: "object"
+    required:
+    - "title"
+    - "callbackUrl"
+    properties:
+      id:
+        type: "number"
+        format: "int64"
+        description: "Идентификатор приложения"
+      title:
+        type: "string"
+        description: "Название приложения"
+      clientId:
+        type: "string"
+        description: "Идентификатор клиентского приложения"
+      clientSecret:
+        type: "string"
+        description: "Пароль клиентского приложения"
+      callbackUrl:
+        type: "string"
+        description: "Адрес для переадресации"
+    description: "Приложение"
+    example:
+      clientId: "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3"
+      clientSecret: "IwOGYzYTlmM2YxOTQ5MGE3YmNmMDFkNTVk"
+      callbackUrl: "example.app/auth"
+  Apps:
+    type: "array"
+    items:
+      $ref: "#/definitions/App"
+# Added by API Auto Mocking Plugin
+schemes:
+ - "https"
+ - "http"

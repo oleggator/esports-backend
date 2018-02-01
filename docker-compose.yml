@@ -1,0 +1,22 @@
+version: '3'
+services:
+  backend:
+    build: .
+    ports:
+     - "5000:5000"
+    deploy:
+      replicas: 4
+
+  db-host1:
+    image: postgres:10.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yCJvclmS6jZag68j
+
+  db-host2:
+      image: postgres:10.1-alpine
+      restart: always
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: 71WG7vXdchp1KH3w

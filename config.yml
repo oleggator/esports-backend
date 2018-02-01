@@ -1,0 +1,48 @@
+http:
+  method: tcp
+  address: :8000
+
+db:
+  shards:
+#  - name: docker
+#    master:
+#      database: docker
+#      user: docker
+#      password: docker
+#      host: 127.0.0.1
+#      port: 5432
+#      connections: 50
+#    slaves: []
+
+
+  - name: shard1
+    master:
+      database: shard1-master
+      user: postgres
+      password: yCJvclmS6jZag68j
+      host: 127.0.0.1
+      port: 5433
+      connections: 20
+    slaves:
+    - database: shard1-slave
+      user: postgres
+      password: 71WG7vXdchp1KH3w
+      host: 127.0.0.1
+      port: 5434
+      connections: 20
+
+#  - name: shard2
+#    master:
+#      database: shard2-master
+#      user: postgres
+#      password: 71WG7vXdchp1KH3w
+#      host: 127.0.0.1
+#      port: 5434
+#      connections: 20
+#    slaves:
+#    - database: shard2-slave
+#      user: postgres
+#      password: yCJvclmS6jZag68j
+#      host: 127.0.0.1
+#      port: 5433
+#      connections: 20

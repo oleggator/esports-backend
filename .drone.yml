@@ -1,0 +1,11 @@
+pipeline:
+  build:
+    image: golang
+    commands:
+      - go get
+      - go build
+      - go test
+  telegram:
+    image: appleboy/drone-telegram
+    token: echo $telegram
+    to: echo $user

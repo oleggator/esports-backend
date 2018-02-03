@@ -11,5 +11,5 @@ pipeline:
       - go test
   telegram:
     image: appleboy/drone-telegram
-    token: echo $telegram
-    to: echo $user
+    pull: true
+    secrets: [telegram_token, telegram_to]

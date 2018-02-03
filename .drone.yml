@@ -1,3 +1,7 @@
+workspace:
+  base: /go
+  path: src/github.com/oleggator/esports-backend
+
 pipeline:
   build:
     image: golang
